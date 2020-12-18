@@ -10,25 +10,40 @@ namespace Train
     {
         static void Main(string[] args)
         {
-            int n = int.Parse(Console.ReadLine());
-            int sum = 0;
+            List<int> wagones = Console.ReadLine().Split().Select(int.Parse).ToList();
+            int maxCapacity = int.Parse(Console.ReadLine());
 
-            int[] arr = new int[n];
+            string command = Console.ReadLine();
 
-
-            for (int i = 0; i < n; i++)
+            while (command != "end")
             {
-                arr[i] = int.Parse(Console.ReadLine());
-            }
+                string[] commandArgument = command.Split();
 
-            for (int i = 0; i < n; i++)
-            {
-                int amount = arr[i];
-                Console.Write("{0} ", amount);
-                sum += amount;
+                if (commandArgument[0] == "Add")
+                {
+                    wagones.Add(int.Parse(commandArgument[1]));
+                }
+                else
+                {
+                    int passangers = int.Parse(commandArgument[0]);
+
+                    for (int i = 0; i < wagones.Count; i++)
+                    {
+                        int currentWagone = wagones[i];
+                        bool isTherePlace = currentWagone + passangers <= maxCapacity;
+
+                        if (isTherePlace)
+                        {
+                            wagones[i] += passangers;
+                            break;
+                        }
+                    }
+
+                }
+
+                command = Console.ReadLine();
             }
-            Console.WriteLine();
-            Console.WriteLine(sum);
+            Console.WriteLine(string.Join(" ", wagones));
 
         }
     }
